@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>main</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="stylesheet" href="../c/app.css" />
+        <style>
+            .playerInfo {
+                text-align: center;
+                margin:15px;
+            }
+            .playerInfo>h1{
+                border-bottom: 1px dotted #E8E8E8;
+                padding:5px 0px;
+            }
+            .playerInfo>h2{
+                padding: 5px 0;
+                font-weight: normal;
+            }
+            .taskInfo{
+                margin-top: 50px;
+                text-align: center;
+            }
+            .taskInfo h1{
+                background: #000000;
+                color: #FFFFFF;
+                padding: 15px;
+            }
+            b{
+                color: red;
+                padding: 0 3px;    
+            }
+            big{
+                font-size: 3rem;
+                color: red;
+                padding: 0 3px;    
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="twin-box">
+            <h1>任务开始</h1>
+            <a class="btn rt" href="main.html">返回主页</a>
+        </header>
+        <main id="playerInfoEL" class="playerInfo">
+            <h1>当前称号:${g.currentTitle()}</h1>
+            <h2>下级称号:${g.nextTitle()}</h2>
+        </main>
+        <article id="taskInfoEL" class="taskInfo">
+                <h1>老司机修行之<br>《${task.name}》</h1>
+                <p>
+                    <b>${task.questionAmount}</b>题中答对<big>${task.mustCorrectAnswer}</big>题即算完成任务
+                </p>
+        </article>
+        <footer  >
+            <a class="btn btn-block" href="task.html">开始答题</a>
+        </footer>
+        <script type="text/javascript" src="../j/app.js"></script>
+        <script>
+            (function(window, document) {
+                var game = window.top.Game;
+                var task = game.getCurrentTask();
+                document.getElementById("taskInfoEL").yi("task", task);
+                document.getElementById("playerInfoEL").yi("g", game);
+            })(window, document);
+        </script>
+
+    </body>
+
+</html>

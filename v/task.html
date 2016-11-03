@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>任务页</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="stylesheet" href="../c/app.css" />
+        <style>
+            .question {
+                
+            }
+            
+            .q-content {
+                margin: 0;
+                padding: 0 15px;
+                font-family: "微软雅黑";
+                min-height: 80px;
+                position: relative;
+            }
+            
+            .q-content:first-letter {
+                font-size: 1.5rem;
+                color: #FF1111;
+            }
+            
+            mark {
+                position: absolute;
+                right: 15px;
+                bottom: 0;
+                font-size: 4rem;
+                color: red;
+                background: transparent;
+                line-height: normal;
+            }
+            
+            .q-options {
+                list-style-type: upper-alpha;
+                background: #F9F9F9;
+                list-style-position: inside;
+                padding-left: 0px;
+                margin: 0;
+                border-top: 1px dotted #0A6999;
+            }
+            
+            .q-options>li {
+                border-bottom: 1px dotted #0A6999;
+                padding: 15px;
+            }
+            
+            .q-options>li:hover {
+                background: #e8e8e8;
+            }
+            
+            .q-options>li.selected {
+                background: #67CF22;
+            }
+            #taskTipEL{
+                margin: 0;
+                padding-top: 5px;
+                text-align: center;
+            }            
+        </style>
+        <script src="../j/app.js"></script>
+        <script src="../j/zepto.js"></script>
+        <script>
+            //模型
+            var M = (function() {
+                var m = {
+                    task: null, //当前任务  
+                    currentQuestionNo: 1, //当前答题题号
+                    answerCorrect: 0,//正确回答数
+                    init: function() { 
+                        var game=window.top.Game;
+                        var task = game.getCurrentTask();
+                        //随机任务出题顺序
+                        //task.questions.shuffle();
+                        Array.shuffle(task.questions);
+                        
+                        this.task=task;
+                    },
+                    leftQuestionAmount: function() {
+                        return this.task.questionAmount - this.currentQuestionNo;
+                    },
+                    currentQuestion: function() {
+                        var q = this.task.questions[this.currentQuestionNo];
+                        //题号
+                        q.no = this.currentQuestionNo;
+                        //随机选项
+                        //q.options.shuffle();
+                        Array.shuffle(q.options);
+                        
+                        return q;
+                    },
+                    nextQuestion: function() {
+                        this.currentQuestionNo++;
+                    },
+                    isTaskFinish: function() {
+                        return this.answerCorrect === this.task.mustCorrectAnswer;
+                    },
+                    isTaskFail: function() {
+                        //当前剩余题目+已对题目<必须答对题目
+                        var left = this.task.questionAmount - this.currentQuestionNo;
+                        return this.answerCorrect + left < this.task.mustCorrectAnswer;
+                    },
+                    answer: function(uAnswer) {
+                        var q = this.currentQuestion();
+                        var ok = q.correctOptionId === uAnswer;
+                        if (ok) {
+                            this.answerCorrect++;
+                        } else { //答错
+                        }
+                        return ok;
+                    }
+                };
+                return m;
+            })();
+        </script>
+    </head>
+
+    <body>
+        <header class="twin-box">
+            <h1>正确:<b id="answerCorrectEL">${m.answerCorrect}/${m.task.mustCorrectAnswer}</b></h1>
+            <a class="btn rt" href="main.html">返回</a>
+        </header>
+        <article  class="question">
+            <p class="q-content" id="questionContentEL">
+                ${q.no}/${task.questionAmount})${q.content}
+                <mark id="answerCheckResultEL" class="correct"></mark>
+            </p>
+            
+            <ol id="questionOptionsEL" class="q-options">
+                <!--
+                     for(var i=q.options.length,opt;(i--)>0;){
+                         opt=q.options[i];
+                     -->
+                <li data-value="${opt.id}">${opt.content}</li>
+                <!--}-->
+            </ol>
+        </article>
+        <footer>
+            <button id="actionBtn" class="btn btn-block" disabled>确&emsp;认</button>
+            <p id="taskTipEL">任务完成条件:<b>${task.questionAmount}</b>题中答对<b>${task.mustCorrectAnswer}</b>题</p>
+        </footer>
+        
+        <script>
+            var V = (function() {
+                var v = {
+                    selectedAnswerOption: null,
+                    init:function(){
+                        this.paintTaskTipEL(M.task);
+                        this.addActionListener();
+                        this.addAnswerListener(); 
+                    },
+                    paintQuestion: function(q, task) {
+                        this.selectedAnswerOption=null;
+                        var questionContentEL = document.getElementById("questionContentEL");
+                        questionContentEL.yi("q,task", q, task);
+                        var questionOptionsEL=document.getElementById("questionOptionsEL");
+                        questionOptionsEL.yi("q",q);
+                    },
+                    paintTaskTipEL: function(task) {
+                        var taskTipEL = document.getElementById("taskTipEL");
+                        taskTipEL.yi("task",task);
+                    },
+                    paintAnswerInfo: function(model) {
+                        var answerCorrectEL = document.getElementById("answerCorrectEL");
+                        answerCorrectEL.yi("m", model);
+                    },
+                    paintAnswerCheck: function(b) {
+                        var answerCheckResultEL = document.getElementById("answerCheckResultEL");
+                        answerCheckResultEL.innerHTML = b ? "✔" : "✘";
+                    },
+                    addAnswerListener: function() {
+                        $("#questionOptionsEL").tap(function(evt) {
+                            var target = evt.target;
+                            if (target.tagName !== "LI") {
+                                return;
+                            }
+                            var oldAnswer = V.selectedAnswerOption;
+                            if (oldAnswer) {
+                                oldAnswer.removeClass("selected");
+                            }
+                            V.selectedAnswerOption = $(target);
+                            $(target).addClass("selected");
+                            var actionBtn = document.getElementById("actionBtn");
+                            if (actionBtn.disabled) {
+                                actionBtn.disabled = false;
+                            }
+                        });
+                    },
+                    addActionListener: function() {
+                        var actionBtn=document.getElementById("actionBtn");
+                        actionBtn.addEventListener("click",function(evt) {
+                            var btn = evt.target;
+                            if (btn.nextQuestion) {
+                                C.nextQuestion();
+                                btn.nextQuestion = false;
+                                btn.innerHTML = "确 认";
+                                btn.disabled=true;
+                            } else { //验证答案
+                                var uAnswer = V.selectedAnswerOption.attr("data-value");
+                                C.userAnswerQuestion(uAnswer);
+                                btn.nextQuestion = true;
+                                btn.innerHTML = "下一题";
+                            }
+                        });
+                    }
+                };
+                return v;
+            })();
+        </script>
+        <script>
+            var C = (function() {
+                var c = {
+                    init: function() {
+                        M.init(); //初始化模型
+                        //初始化界面
+                        V.init();
+                        //绘制界面
+                        V.paintAnswerInfo(M);
+                        V.paintQuestion(M.currentQuestion(), M.task);
+                    },
+                    userAnswerQuestion: function(uAnswer) {
+                        var ok = M.answer(uAnswer);
+                        V.paintAnswerCheck(ok);
+                        if (ok) {
+                            V.paintAnswerInfo(M);
+                            if (M.isTaskFinish()) {
+                                //任务完成
+                                this.taskFinish();
+                            }
+                        }else{
+                            if (M.isTaskFail()) {
+                                //任务失败
+                                this.taskFail();
+                                return;
+                            }
+                        }
+                    },
+                    taskFinish: function() {
+                        var game=window.top.Game;
+                        game.taskFinish();
+                        if(game.isWin()){
+                            game.reset();
+                            window.location.href = "taskresult.html#win";
+                        }else{
+                            window.location.href = "taskresult.html#finish";
+                        }
+                    },
+                    taskFail: function() {
+                        window.location.href = "taskresult.html#fail";
+                    },
+                    nextQuestion: function() {
+                        M.nextQuestion();
+                        V.paintQuestion(M.currentQuestion(), M.task);
+                    }
+                };
+                return c;
+            })();
+
+            C.init();
+        </script>
+
+    </body>
+
+</html>

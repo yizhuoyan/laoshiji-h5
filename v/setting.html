@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>main</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="stylesheet" href="../c/app.css" />
+        <link rel="stylesheet" href="../c/range.css" />
+        <style>
+            main {
+                padding: 15px;
+            }
+            
+            table.setting {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 10px;
+            }
+            
+            table.setting th {
+                font-weight: bold;
+                text-align: left;
+            }
+            
+            table.setting td {
+                text-align: right;
+                vertical-align: middle;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="twin-box">
+            <h1>游戏设置</h1>
+            <a class="btn rt" href="main.html">返回主页</a>
+        </header>
+        <main>
+            <table class="setting">
+                <tr>
+                    <th>
+                        背景音乐
+                    </th>
+                    <td>
+                        关<input id="bgMusicEL"   type="range" value="0"  min="0" max="1" />开
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        清空数据
+                    </th>
+                    <td>
+                        否<input id="resetEL"  type="range" value="0" max="1" min="0"  />是
+                    </td>
+                </tr>
+            </table>
+        </main>
+        <footer>
+            <a class="btn btn-block" href="main.html">返回</a>
+        </footer>
+        <script>
+            (function(){
+                var bgMusicEL = document.getElementById("bgMusicEL");
+                var resetGameEL=document.getElementById("resetEL");
+                var game=window.top.Game;
+                if(game.bgMusic){
+                    bgMusicEL.className="on";
+                    bgMusicEL.value="1";
+                }else{
+                    bgMusicEL.value="0";
+                }
+                var handleRangeChange=function(evt){
+                    var range=evt.target;
+                    if(range.value==="0"){//off
+                        range.className=range.className.replace(/\s*on/g,"");
+                    }else{//on
+                        range.className+=" on";
+                    }
+                    if(range.id==="bgMusicEL"){
+                        
+                        game.musicPlay(range.value==="1");    
+                    }
+                    if(range.id==="resetEL"){
+                        if(range.value==="1"){
+                            if(window.confirm("确认重置游戏?")){
+                                game.reset();                                
+                            }else{
+                                range.value="0";
+                                range.className=range.className.replace(/\s*on/g,"");
+                            }
+                        }
+                    }
+                };
+                bgMusicEL.addEventListener("change",handleRangeChange,false);
+                resetGameEL.addEventListener("change",handleRangeChange,false);
+            })();
+        </script>
+    </body>
+
+</html>

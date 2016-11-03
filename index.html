@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>老司机</title>
+        <!-- 优先使用 IE 最新版本和 Chrome -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <!--视窗控制,禁止缩放-->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 360双核使用webkit内核 -->
+        <meta name="renderer" content="webkit">
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="c/app.css">
+        <script>
+            window.onload = function() {
+                var loadingBox = document.getElementById("loading");
+                loadingBox.className = "fadeOut";
+                setTimeout(function() {
+                    loadingBox.parentNode.removeChild(loadingBox);
+                }, 2000);
+                var mainFrame = document.getElementById("main");
+                mainFrame.style.display = "block";
+            };
+        </script>
+        <style>
+            .fadeOut {
+                animation: fadeOut 2s;
+            }
+            
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+            
+            @-webkit-keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+        </style>
+        <style>
+            iframe,
+            article {
+                width: 100vw;
+                height: 100vh;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border: 0;
+            }
+            
+            article {
+                background: #000000;
+                display: table;
+            }
+            
+            iframe {
+                display: none;
+                background: #FFFFFF;
+            }
+            
+            ol.spinner {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+                padding: 0;
+            }
+            
+            ol.spinner > li {
+                background-color: #67CF22;
+                height: 100px;
+                width: 10px;
+                display: inline-block;
+                border-radius: 6px;
+                -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+                animation: stretchdelay 1.2s infinite ease-in-out;
+            }
+            
+            @-webkit-keyframes stretchdelay {
+                0%,
+                40%,
+                100% {
+                    -webkit-transform: scaleY(0.4)
+                }
+                20% {
+                    -webkit-transform: scaleY(1.0)
+                }
+            }
+            
+            @keyframes stretchdelay {
+                0%,
+                40%,
+                100% {
+                    transform: scaleY(0.4);
+                    -webkit-transform: scaleY(0.4);
+                }
+                20% {
+                    transform: scaleY(1.0);
+                    -webkit-transform: scaleY(1.0);
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <article id="loading">
+            <ol id="spinnerEL" class="spinner"></ol>
+            <script>
+                var spinnerEL = document.getElementById("spinnerEL");
+                var fragment = document.createDocumentFragment();
+                var li = null;
+                for (var i = 1, delay; i < 12; i++) {
+                    li = document.createElement("li");
+                    delay = -1.2 + (i * 0.1);
+                    li.style["animation-delay"] = delay + "s";
+                    li.style["-webkit-animation-delay"] = delay + "s";
+                    fragment.appendChild(li);
+                    fragment.appendChild(document.createTextNode(" "));
+                }
+                spinnerEL.appendChild(fragment);
+            </script>
+        </article>
+        <iframe id="main" src="v/main.html"></iframe>
+        <audio id="bgMusicEL" src="a/bg.mp3"  loop ></audio>
+        <script src="j/game.js"></script>
+
+    </body>
+
+</html>

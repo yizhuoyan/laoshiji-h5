@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>main</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="stylesheet" href="../c/app.css" />
+        <style>
+            .taskResult>*{
+                text-align: center;
+                display: none;
+            }
+            figcaption{
+                font-family: "微软雅黑";
+                font-size: 1.5rem;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="twin-box">
+            <h1>任务结果</h1>
+            <a class="btn rt" href="main.html">返回首页</a>
+        </header>
+        <main class="taskResult">
+            <div id="taskFailEL">
+                <figure>
+                    <img src="../a/task-fail.png" width="100%" height="100%" />
+                    <figcaption>
+                                                对不起,任务失败,请再接再励!        
+                    </figcaption>
+                </figure>
+            </div>
+            <div id="taskFinishEL">
+                <figure>
+                    <img src="../a/task-success.png" width="100%" height="100%"  >
+                    <figcaption>
+                                           恭喜你,成功完成任务!        
+                    </figcaption>
+                </figure>
+                <p>你获得称号:<strong id="getTitleEL"></strong></p>
+            </div>
+            <div id="winGameEL">
+                <figure>
+                    <img src="../a/logo.png">
+                    <figcaption>
+                                           恭喜你,成功获得JAVA老司机称号!        
+                    </figcaption>
+                </figure>
+            </div>
+        </main>
+        <footer>
+            <a class="btn btn-block" href="taskbegin.html">继续修行</a>
+        </footer>
+        <script type="text/javascript" src="../j/app.js" ></script>        
+        <script>
+            (function(window,document){
+                var result=window.location.hash.substr(1);
+                if("win"===result){
+                    var gameWinEL=document.getElementById("winGameEL");
+                        gameWinEL.style.display="block";
+                }else  if("finish"===result){
+                        var taskFinishEL=document.getElementById("taskFinishEL");
+                        taskFinishEL.style.display="block";
+                        var getTitleEL=document.getElementById("getTitleEL");
+                        var game=window.top.Game;
+                        getTitleEL.innerHTML=game.currentTitle();    
+                }else{
+                    var taskFailEL=document.getElementById("taskFailEL");
+                    taskFailEL.style.display="block";
+                }
+            })(window,document);
+            
+        </script>
+        
+    </body>
+
+</html>

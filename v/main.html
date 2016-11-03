@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>main</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="stylesheet" href="../c/app.css" />
+        <style>
+            .tri-box {
+                margin-top: 15px;
+            }
+            .tri-box>:first-child {
+                float: left;
+            }
+            .tri-box>:last-child {
+                float: right;
+            }
+            article{
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="twin-box" >
+                <h1>老司机</h1>
+                <a class="btn rt"  href="setting.html" >游戏设置</a>
+        </header>
+        <article>
+            <figure>
+                <img src="../logo.png">
+                <figcaption>
+                    JAVA版V1.0
+                </figcaption>
+            </figure>
+        </article>
+        <footer>
+            <a id="taskBeginEL" class="btn btn-block" href="taskbegin.html">开始修行</a>
+            <div class="tri-box">
+                <a class="btn" href="titles.html">称号说明</a>
+                <a class="btn" href="what.html">老司机?</a>
+                <a class="btn" href="about.html">帮助&amp;关于</a>
+            </div>
+        </footer>
+        <script>
+            (function(window,document){
+                var paint=function(game){
+                    var taskBeginEL=document.getElementById("taskBeginEL");
+                    if(game.isNewPlayer){
+                        taskBeginEL.innerHTML="开始修行";
+                        game.isNewPlayer=false;
+                    }else{
+                        taskBeginEL.innerHTML="继续修行";
+                    }
+                }
+                paint(window.top.Game);
+            })(window,document);
+        </script>
+    </body>
+
+</html>

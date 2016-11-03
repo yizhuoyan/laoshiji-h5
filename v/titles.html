@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>main</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="stylesheet" href="../c/swiper.min.css" />
+        <link rel="stylesheet" href="../c/app.css" />
+        <style>
+            .swiper-container{
+                position: absolute;
+                top:80px;
+                bottom: 0px;
+                width: 100vw;
+            }
+            .swiper-slide{
+                text-align: center;
+                padding: 1em;
+                box-sizing: border-box;
+            }
+            .swiper-slide>h1{
+                border-bottom:1px solid #009CDA;
+                margin: 0 30px;
+                text-align: center;
+                padding-bottom: 10px;
+                border-radius: 15px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="twin-box">
+            <h1>称号说明</h1>
+            <a class="btn rt" href="main.html">返回主页</a>
+        </header>
+        <article class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <h1>小白</h1>
+                    <p>对电脑什么都不懂的人</p>
+                </div>
+                <div class="swiper-slide">
+                    <h1>电脑爱好者</h1>
+                    <p>热爱电脑,熟悉电脑的使用</p>
+                </div>
+                <div class="swiper-slide">
+                    <h1>程序员</h1>
+                    <p>能编写一些简单的程序,特别是网页,也熟悉点数据库</p>
+                </div>
+                <div class="swiper-slide">
+                    <h1>JAVA初学者</h1>
+                    <p>熟悉java语法,能编写简单的java程序</p>
+                </div>
+                <div class="swiper-slide">
+                    <h1>java初级工程师</h1>
+                    <p>熟悉javase,JAVAee中的servlet和jsp,能开发简单的web应用</p>
+                </div>
+                <div class="swiper-slide">
+                    <h1>java中级工程师</h1>
+                    <p>能编写功能复杂的web应用</p>
+                </div>
+                <div class="swiper-slide">
+                    <h1>java高级工程师</h1>
+                    <p>对java非常熟悉,具有一定的架构经验</p>
+                </div>
+                <div class="swiper-slide">
+                    <h1>java老司机</h1>
+                    <p>熟悉java的一切,能独立设计系统架构,进行项目管理,业内称为"大牛"</p>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </article>
+        
+        <script  src="../j/swiper.min.js" ></script>
+        <script>
+            var levelSP = new Swiper ('.swiper-container', {
+                        direction: 'horizontal',
+                        loop: true,
+                        pagination: '.swiper-pagination'
+            });        
+            
+        </script>
+    </body>
+
+</html>
